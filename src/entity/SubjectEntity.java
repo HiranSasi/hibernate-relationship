@@ -9,12 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cascade;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,23 +25,18 @@ import lombok.ToString;
 @Getter
 @ToString
 @Entity
-@Table(name = "Student")
-
-public class StudentEntity {
+@Table(name = "Subject")
+public class SubjectEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Lap_ID",nullable = false)
-   
-    private LaptopEntity laptopEntity;
-
-@OneToMany(mappedBy = "studentEntity",targetEntity = BookEntity.class)
-    List<BookEntity>bookEntities;
-
-@ManyToMany(mappedBy = "studentEntities",targetEntity = SubjectEntity.class)
-    List<SubjectEntity>subjectEntities = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Subject_id",
+     joinColumns = { @JoinColumn(name = "sub_id") },
+      inverseJoinColumns = {
+            @JoinColumn(name = "stu_id") })
+    List<StudentEntity> studentEntities = new ArrayList<>();
 }
